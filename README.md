@@ -1,6 +1,7 @@
 # ClipSpotter For Personal
 
 ## Overview
+Discord Bot showing clips of a particular streamer or game on Twitch.<br>
 ClipSpotter for personal hosting and use.
 
 ## Usage
