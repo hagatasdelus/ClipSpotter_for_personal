@@ -5,7 +5,7 @@ ClipSpotter for personal hosting and use.
 
 ## Usage
 Create a .env in the root directory of the project and describe it with reference to the following.
-```
+```plaintext:.env
 DISCORD_ACCESS_TOKEN=
 TWITCH_CLIENT_ID=
 TWITCH_CLIENT_SECRET=
