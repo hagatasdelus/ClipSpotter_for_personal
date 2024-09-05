@@ -1,0 +1,55 @@
+from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import String, Enum, select, BigInteger
+from myapp.utils.database import db_session, select_session
+from .base_model import BaseModel
+from .category import Category
+
+
+class DiscordModel(BaseModel):
+    __tablename__ = "discord_users"
+
+    guild_id: Mapped[int] = mapped_column(
+        "guild_id", BigInteger, nullable=False, index=True
+    )
+    category: Mapped[Category] = mapped_column(
+        "category",
+        Enum(Category),
+        nullable=False,
+        default=Category.UNSELECTED,
+    )
+    name: Mapped[str] = mapped_column("set_name", String(64), nullable=True)
+    get_from: Mapped[int] = mapped_column("get_from", nullable=True)
+
+    def __init__(self, guild_id):
+        self.guild_id = guild_id
+
+    @classmethod
+    async def create_new_guild(cls, guild_id: int):
+        async with db_session() as session:
+            new_guild = cls(guild_id=guild_id)
+            session.add(new_guild)
+            return new_guild
+
+    @classmethod
+    async def select_guild_by_guild_id(cls, guild_id):
+        async with select_session() as session:
+            result = await session.execute(select(cls).filter_by(guild_id=guild_id))
+            match_result = result.scalars().first()
+            return match_result
+
+    async def update_days_by_guild_id(self, get_from: int):
+        async with db_session() as session:
+            self.get_from = get_from
+            session.add(self)
+
+    async def save_new_cat_settings(self, category: Category, name: str):
+        async with db_session() as session:
+            self.category = category
+            self.name = name
+            session.add(self)
+
+    async def remove_cat_settings(self):
+        async with db_session() as session:
+            self.category = Category.UNSELECTED
+            self.name = ""
+            session.add(self)

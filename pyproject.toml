@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "clipspotter-for-personal"
+version = "1.8.3"
+description = ""
+authors = ["You"]
+
+[tool.poetry.dependencies]
+python = "^3.11.1"
+alembic = "1.13.1"
+uvicorn = "0.30.1"
+discord-py = "2.4.0"
+fastapi = "0.111.0"
+fuzzywuzzy = "0.18.0"
+levenshtein = "0.25.1"
+requests = "2.32.1"
+python-dotenv = "1.0.1"
+sqlalchemy = "2.0.30"
+aiohttp = "3.9.5"
+greenlet = "3.0.3"
+aiosqlite = "^0.20.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
