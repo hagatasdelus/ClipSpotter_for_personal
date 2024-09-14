@@ -30,15 +30,11 @@ class GetFrom(commands.Cog):
     async def get_from_command(
         self,
         interaction: discord.Interaction,
-        get_from: int,
+        get_from: discord.app_commands.Range[
+            int, MIN_CLIP_FETCH_DAYS, MAX_CLIP_FETCH_DAYS
+        ],
         visibility: Visibility = Visibility.PRIVATE,
     ):
-        if get_from < MIN_CLIP_FETCH_DAYS or get_from > MAX_CLIP_FETCH_DAYS:
-            await interaction.response.send_message(
-                f"Invalid those days: {get_from}. Please provide less than 5 years(1825 days).",
-                ephemeral=True,
-            )
-            return
         guild = await DiscordModel.select_guild_by_guild_id(interaction.guild_id)
         if not guild:
             await interaction.response.send_message(

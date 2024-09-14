@@ -48,25 +48,16 @@ class Set(commands.Cog):
     async def set(
         self,
         interaction: discord.Interaction,
-        category: str,
+        category: Category,
         name: str,
         visibility: Visibility = Visibility.PRIVATE,
     ):
-        category_enum = Category.from_string(category)
-        if category_enum is None:
-            await interaction.response.send_message(
-                f"Invalid category: {category}", ephemeral=True
-            )
-            return
-
         guild = await self.get_or_create_guild(interaction.guild_id)
         try:
-            output_name = await self.register_category_item(
-                interaction, category_enum, name
-            )
-            await guild.save_new_cat_settings(category_enum, output_name)
+            output_name = await self.register_category_item(interaction, category, name)
+            await guild.save_new_cat_settings(category, output_name)
             await interaction.response.send_message(
-                f"Successfully set {category_enum.display_name} to: {output_name}",
+                f"Successfully set {category.display_name} to: {output_name}",
                 ephemeral=visibility.is_ephemeral,
             )
         except SetError:

@@ -1,0 +1,14 @@
+services:
+  app:
+    image: clipspotter-for-personal
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: sqlite+aiosqlite:///./${DATABASE_NAME}
+    volumes:
+      - ./${DATABASE_NAME}:/app/${DATABASE_NAME}

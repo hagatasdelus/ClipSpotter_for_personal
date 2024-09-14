@@ -38,7 +38,9 @@ class Display(commands.Cog):
     async def display(
         self,
         interaction: discord.Interaction,
-        num_clips: int,
+        num_clips: discord.app_commands.Range[
+            int, MIN_CLIPS_TO_FETCH, MAX_CLIPS_TO_FETCH
+        ],
         visibility: Visibility = Visibility.PRIVATE,
     ):
         if not self.validate_input(num_clips):

@@ -7,13 +7,6 @@ class Category(enum.Enum):
     UNSELECTED = "unselected"
 
     @classmethod
-    def from_string(cls, category: str):
-        category = category.lower()
-        for cat in cls.selectable_categories():
-            if cat.value == category:
-                return cat
-
-    @classmethod
     def selectable_categories(cls):
         return [c for c in cls if c != cls.UNSELECTED]
 
