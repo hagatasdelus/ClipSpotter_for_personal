@@ -1,9 +1,9 @@
-from sqlalchemy.orm import Mapped, mapped_column
-from myapp.utils.database import db_session, select_session
-from sqlalchemy import select
-from myapp.models.base_model import BaseModel
 from fuzzywuzzy import fuzz
 from myapp.constants import THRESHOLD_FOR_SIMILARITY
+from myapp.models.base_model import BaseModel
+from myapp.utils.database import db_session, select_session
+from sqlalchemy import select
+from sqlalchemy.orm import Mapped, mapped_column
 
 
 class TwitchBaseModel(BaseModel):
@@ -35,7 +35,6 @@ class TwitchGameModel(TwitchBaseModel):
 
     @classmethod
     async def select_by_normalized_name(cls, input_name: str):
-        """類似性マッチングを使用して、正規化された名前でレコードを選択"""
         async with select_session() as session:
             all_records = await session.execute(select(cls))
             all_records = all_records.scalars().all()
@@ -60,7 +59,6 @@ class TwitchGameModel(TwitchBaseModel):
 
     @staticmethod
     def normalize_name(name: str) -> str:
-        """類似性マッチングのためにゲーム名を正規化"""
         return name.strip().lower()
 
 

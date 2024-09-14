@@ -23,6 +23,10 @@ class Set(commands.Cog):
         name="set",
         description="Set the streamer or game to get clips from.",
     )
+    @discord.app_commands.describe(
+        category="The category to set (Streamers or Games)",
+        name="The name of the streamer or game",
+    )
     @discord.app_commands.checks.has_permissions(use_application_commands=True)
     @discord.app_commands.choices(
         category=[

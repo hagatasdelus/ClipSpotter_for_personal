@@ -18,8 +18,14 @@ class Display(commands.Cog):
     @discord.app_commands.command(
         name="display", description="Display clips from the set streamer or game."
     )
+    @discord.app_commands.describe(
+        num_clips="The number of clips to display",
+        ephemeral="Whether the message should be ephemeral (default: True)",
+    )
     @discord.app_commands.checks.has_permissions(use_application_commands=True)
-    async def display(self, interaction: discord.Interaction, num_clips: int):
+    async def display(
+        self, interaction: discord.Interaction, num_clips: int, ephemeral: bool = True
+    ):
         if not self.validate_input(num_clips):
             await interaction.response.send_message(
                 f"Please provide a number between {MIN_CLIPS_TO_FETCH} and {MAX_CLIPS_TO_FETCH}.",
@@ -43,7 +49,7 @@ class Display(commands.Cog):
             await interaction.response.send_message("No clips found.", ephemeral=True)
             return
 
-        await self.send_clips(interaction, clips)
+        await self.send_clips(interaction, clips, ephemeral)
 
     def validate_input(self, num_clips: int) -> bool:
         return MIN_CLIPS_TO_FETCH <= num_clips <= MAX_CLIPS_TO_FETCH
@@ -64,12 +70,16 @@ class Display(commands.Cog):
             first=num_clips,
         )
 
-    async def send_clips(self, interaction: discord.Interaction, clips):
+    async def send_clips(
+        self, interaction: discord.Interaction, clips, ephemeral: bool
+    ):
         await interaction.response.send_message(
-            f"Found {len(clips)} clips. Sending them now...", ephemeral=True
+            f"Found {len(clips)} clips. Sending them now...", ephemeral=ephemeral
         )
         for i, clip in enumerate(clips, 1):
-            await interaction.followup.send(f"Clip {i}: {clip['url']}", ephemeral=True)
+            await interaction.followup.send(
+                f"Clip {i}: {clip['url']}", ephemeral=ephemeral
+            )
 
 
 async def setup(bot: commands.Bot):

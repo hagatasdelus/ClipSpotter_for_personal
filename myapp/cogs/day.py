@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
-from myapp.models import DiscordModel
 from myapp.constants import MAX_CLIP_FETCH_DAYS, MIN_CLIP_FETCH_DAYS
+from myapp.models import DiscordModel
 
 
 class GetFrom(commands.Cog):
@@ -16,6 +16,7 @@ class GetFrom(commands.Cog):
     @discord.app_commands.command(
         name="day", description="Set the number of days to get clips from."
     )
+    @discord.app_commands.describe(get_from="The number of days to get clips from.")
     @discord.app_commands.checks.has_permissions(use_application_commands=True)
     async def get_from_command(self, interaction: discord.Interaction, get_from: int):
         if get_from < MIN_CLIP_FETCH_DAYS or get_from > MAX_CLIP_FETCH_DAYS:
