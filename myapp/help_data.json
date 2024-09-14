@@ -16,9 +16,9 @@
       },
       {
         "name": "Display Command",
-        "value": "Use this command to display clips from the set streamer or game.\n\"<number_of_clips>\" can be a value from 1 to 10.",
-        "usage": "```/display <number_of_clips>```",
-        "example": "```/display 5```"
+        "value": "Use this command to display clips from the set streamer or game.\n\"<number_of_clips>\" can be a value from 1 to 10.\nBy specifying 'ephemeral', you can (explicitly) set whether the clip's display results should be made public. (default: private)",
+        "usage": "```/display <number_of_clips>\n/display <number_of_clips> <visibility>```",
+        "example": "```/display 5\n/display 3 public```"
       },
       {
         "name": "Day Command",

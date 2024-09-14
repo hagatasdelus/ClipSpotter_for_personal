@@ -1,4 +1,5 @@
 from .base_model import BaseModel
+from .category import Category
 from .discord_model import DiscordModel
 from .twitch_model import TwitchBaseModel, TwitchGameModel, TwitchStreamerModel
-from .category import Category
+from .visibility import Visibility

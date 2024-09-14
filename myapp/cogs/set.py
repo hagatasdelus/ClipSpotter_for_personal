@@ -2,7 +2,13 @@ import discord
 import requests
 from discord.ext import commands
 from myapp.api import TwitchAPI
-from myapp.models import Category, DiscordModel, TwitchGameModel, TwitchStreamerModel
+from myapp.models import (
+    Category,
+    DiscordModel,
+    TwitchGameModel,
+    TwitchStreamerModel,
+    Visibility,
+)
 
 
 class SetError(Exception):
@@ -26,15 +32,26 @@ class Set(commands.Cog):
     @discord.app_commands.describe(
         category="The category to set (Streamers or Games)",
         name="The name of the streamer or game",
+        visibility="The visibility of the message (default: private)",
     )
     @discord.app_commands.checks.has_permissions(use_application_commands=True)
     @discord.app_commands.choices(
         category=[
             discord.app_commands.Choice(name=cat.display_name, value=cat.value)
             for cat in Category.selectable_categories()
-        ]
+        ],
+        visibility=[
+            discord.app_commands.Choice(name=vis.value, value=vis.value)
+            for vis in Visibility.selectable_visibilities()
+        ],
     )
-    async def set(self, interaction: discord.Interaction, category: str, name: str):
+    async def set(
+        self,
+        interaction: discord.Interaction,
+        category: str,
+        name: str,
+        visibility: Visibility = Visibility.PRIVATE,
+    ):
         category_enum = Category.from_string(category)
         if category_enum is None:
             await interaction.response.send_message(
@@ -50,7 +67,7 @@ class Set(commands.Cog):
             await guild.save_new_cat_settings(category_enum, output_name)
             await interaction.response.send_message(
                 f"Successfully set {category_enum.display_name} to: {output_name}",
-                ephemeral=True,
+                ephemeral=visibility.is_ephemeral,
             )
         except SetError:
             pass

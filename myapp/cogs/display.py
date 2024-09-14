@@ -2,7 +2,13 @@ import discord
 from discord.ext import commands
 from myapp.api import TwitchAPI
 from myapp.constants import MAX_CLIPS_TO_FETCH, MIN_CLIPS_TO_FETCH
-from myapp.models import Category, DiscordModel, TwitchGameModel, TwitchStreamerModel
+from myapp.models import (
+    Category,
+    DiscordModel,
+    TwitchGameModel,
+    TwitchStreamerModel,
+    Visibility,
+)
 
 
 class Display(commands.Cog):
@@ -20,11 +26,20 @@ class Display(commands.Cog):
     )
     @discord.app_commands.describe(
         num_clips="The number of clips to display",
-        ephemeral="Whether the message should be ephemeral (default: True)",
+        visibility="The visibility of the message (default: private)",
+    )
+    @discord.app_commands.choices(
+        visibility=[
+            discord.app_commands.Choice(name=vis.value, value=vis.value)
+            for vis in Visibility.selectable_visibilities()
+        ]
     )
     @discord.app_commands.checks.has_permissions(use_application_commands=True)
     async def display(
-        self, interaction: discord.Interaction, num_clips: int, ephemeral: bool = True
+        self,
+        interaction: discord.Interaction,
+        num_clips: int,
+        visibility: Visibility = Visibility.PRIVATE,
     ):
         if not self.validate_input(num_clips):
             await interaction.response.send_message(
@@ -49,7 +64,7 @@ class Display(commands.Cog):
             await interaction.response.send_message("No clips found.", ephemeral=True)
             return
 
-        await self.send_clips(interaction, clips, ephemeral)
+        await self.send_clips(interaction, clips, visibility)
 
     def validate_input(self, num_clips: int) -> bool:
         return MIN_CLIPS_TO_FETCH <= num_clips <= MAX_CLIPS_TO_FETCH
@@ -71,14 +86,15 @@ class Display(commands.Cog):
         )
 
     async def send_clips(
-        self, interaction: discord.Interaction, clips, ephemeral: bool
+        self, interaction: discord.Interaction, clips, visility: Visibility
     ):
         await interaction.response.send_message(
-            f"Found {len(clips)} clips. Sending them now...", ephemeral=ephemeral
+            f"Found {len(clips)} clips. Sending them now...",
+            ephemeral=visility.is_ephemeral,
         )
         for i, clip in enumerate(clips, 1):
             await interaction.followup.send(
-                f"Clip {i}: {clip['url']}", ephemeral=ephemeral
+                f"Clip {i}: {clip['url']}", ephemeral=visility.is_ephemeral
             )
 
 

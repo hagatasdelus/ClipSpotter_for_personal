@@ -7,8 +7,7 @@ from discord.ext import commands
 class CSHelp(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        with open("myapp/help_data.json", "r") as f:
-            self.help_data = json.load(f)
+        self.help_data = None
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -20,6 +19,8 @@ class CSHelp(commands.Cog):
     )
     @discord.app_commands.checks.has_permissions(use_application_commands=True)
     async def help_command(self, interaction: discord.Interaction):
+        with open("myapp/help_data.json", "r") as f:
+            self.help_data = json.load(f)
         embed = discord.Embed(
             title=self.help_data["title"],
             description=self.help_data["description"],
