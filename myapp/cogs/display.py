@@ -22,7 +22,7 @@ class Display(commands.Cog):
         await self.bot.tree.sync()
 
     @discord.app_commands.command(
-        name="display", description="Display clips from the set streamer or game."
+        name="display", description="Display clips from the set streamer or game"
     )
     @discord.app_commands.describe(
         num_clips="The number of clips to display",
@@ -43,21 +43,15 @@ class Display(commands.Cog):
         ],
         visibility: Visibility = Visibility.PRIVATE,
     ):
-        if not self.validate_input(num_clips):
-            await interaction.response.send_message(
-                f"Please provide a number between {MIN_CLIPS_TO_FETCH} and {MAX_CLIPS_TO_FETCH}.",
-                ephemeral=True,
-            )
-            return
         guild = await DiscordModel.select_guild_by_guild_id(interaction.guild_id)
         if not guild:
             await interaction.response.send_message(
                 "Not found guild info.", ephemeral=True
             )
             return
-        if not guild.get_from:
+        if not guild.days_ago:
             await interaction.response.send_message(
-                "Guild information is not propertly set.\nPlease set the number of days to get clips from using the '/day' command.",
+                "Guild information is not propertly set.\nPlease set the number of days to get clips from using the '/clip-range' command.",
                 ephemeral=True,
             )
         set_id = await self.get_set_id(guild)
@@ -83,20 +77,20 @@ class Display(commands.Cog):
         return self.twitch_api.get_clips(
             category=guild.category,
             set_id=set_id,
-            get_from=guild.get_from,
+            days_ago=guild.days_ago,
             first=num_clips,
         )
 
     async def send_clips(
-        self, interaction: discord.Interaction, clips, visility: Visibility
+        self, interaction: discord.Interaction, clips, visibility: Visibility
     ):
         await interaction.response.send_message(
             f"Found {len(clips)} clips. Sending them now...",
-            ephemeral=visility.is_ephemeral,
+            ephemeral=visibility.is_ephemeral,
         )
         for i, clip in enumerate(clips, 1):
             await interaction.followup.send(
-                f"Clip {i}: {clip['url']}", ephemeral=visility.is_ephemeral
+                f"Clip {i}: {clip['url']}", ephemeral=visibility.is_ephemeral
             )
 
 

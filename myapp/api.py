@@ -1,6 +1,7 @@
+from datetime import datetime, timedelta
+
 import requests
 from myapp import CLIENT_ID, CLIENT_SECRET
-from datetime import datetime, timedelta
 from myapp.models.category import Category
 
 
@@ -29,11 +30,11 @@ class TwitchAPI:
             "Authorization": f"Bearer {self.access_token}",
         }
 
-    def get_clips(self, category, set_id, get_from, first):
+    def get_clips(self, category, set_id, days_ago, first):
         url = self.base_url + "clips"
         params = {
             "first": first,
-            "started_at": (datetime.now() - timedelta(get_from)).strftime(
+            "started_at": (datetime.now() - timedelta(days_ago)).strftime(
                 "%Y-%m-%dT%H:%M:%SZ"
             ),
             "ended_at": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -46,18 +47,19 @@ class TwitchAPI:
         response.raise_for_status()
         return response.json()["data"]
 
-    def _get_id(self, endpoint, name, name_key):
+    def _get_id(self, endpoint, name, query_params, return_keys):
         url = f"{self.base_url}{endpoint}"
-        params = {name_key: name}
-        response = requests.get(url, headers=self._get_headers(), params=params)
+        response = requests.get(url, headers=self._get_headers(), params=query_params)
         response.raise_for_status()
         data = response.json().get("data")
         if not data:
             raise ValueError(f"No data found for name: {name}")
-        return data[0]["id"], data[0][name_key]
+        return tuple(data[0][key] for key in return_keys)
 
-    def get_broadcaster_id(self, name: str) -> tuple[str, str]:
-        return self._get_id("users", name, "login")
+    def get_broadcaster_id(self, name: str) -> tuple[str, str, str]:
+        return self._get_id(
+            "users", name, {"login": name}, ["id", "login", "display_name"]
+        )
 
     def get_game_id(self, name: str) -> tuple[str, str]:
-        return self._get_id("games", name, "name")
+        return self._get_id("games", name, {"name": name}, ["id", "name"])

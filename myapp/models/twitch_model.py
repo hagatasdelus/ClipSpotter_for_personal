@@ -69,7 +69,14 @@ class TwitchStreamerModel(TwitchBaseModel):
         "streamer_name", nullable=False, unique=True
     )
     streamer_id: Mapped[str] = mapped_column("streamer_id", nullable=False, unique=True)
+    streamer_display_name: Mapped[str] = mapped_column(
+        "display_name", nullable=False, unique=True
+    )
 
     @classmethod
     async def select_by_name(cls, name: str):
         return await super().select_by_name(name, "streamer_name")
+
+    @classmethod
+    async def select_by_display_name(cls, display_name: str):
+        return await super().select_by_name(display_name, "streamer_display_name")

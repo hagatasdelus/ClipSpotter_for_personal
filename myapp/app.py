@@ -1,13 +1,13 @@
+import asyncio
+from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
+from typing import Any
+
 import discord
 from discord.ext import commands
-from contextlib import asynccontextmanager
-import asyncio
 from fastapi import FastAPI
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
-from collections.abc import AsyncGenerator
-from typing import Any
 from myapp import ACCESS_TOKEN, DATABASE_URL, Base
-
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 intents = discord.Intents.default()
 intents.guilds = True
@@ -44,9 +44,10 @@ async def load_extensions():
     INITIAL_EXTENSIONS = [
         "myapp.cogs.set",
         "myapp.cogs.display",
-        "myapp.cogs.day",
+        "myapp.cogs.clip-range",
         "myapp.cogs.status",
         "myapp.cogs.remove",
+        "myapp.cogs.set-streamer",
         "myapp.cogs.cshelp",
     ]
     for cog in INITIAL_EXTENSIONS:

@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from myapp.constants import MIN_CLIP_FETCH_DAYS
-from myapp.models import Category, DiscordModel, Visibility
+from myapp.models import Category, DiscordModel, TwitchStreamerModel, Visibility
 
 
 class Status(commands.Cog):
@@ -14,7 +14,7 @@ class Status(commands.Cog):
         await self.bot.tree.sync()
 
     @discord.app_commands.command(
-        name="status", description="Display the current set streamer or game."
+        name="status", description="Display the current set streamer or game"
     )
     @discord.app_commands.describe(
         visibility="The visibility of the message (default: private)",
@@ -43,16 +43,24 @@ class Status(commands.Cog):
                 ephemeral=True,
             )
         else:
-            if guild.get_from is not None:
+            if guild.days_ago is not None:
+                name_status = await self.get_name(guild)
                 await interaction.response.send_message(
-                    f"Current {guild.category.display_name} set to: {guild.name}.\nSet to get clips from {guild.get_from} day{'s' if guild.get_from > MIN_CLIP_FETCH_DAYS else ''} ago.",
+                    f"Current {guild.category.display_name} set to: {name_status}.\nSet to get clips from {guild.days_ago} day{'s' if guild.days_ago > MIN_CLIP_FETCH_DAYS else ''} ago.",
                     ephemeral=True,
                 )
             else:
                 await interaction.response.send_message(
-                    f"The number of days to get clips has not been set.\nPlease set the number of days to get clips from using the '/day' command.",
+                    f"The number of days to get clips has not been set.\nPlease set the number of days to get clips from using the '/clip-range' command.",
                     ephemeral=visibility.is_ephemeral,
                 )
+
+    async def get_name(self, guild):
+        if guild.category == Category.STREAMER:
+            streamer = await TwitchStreamerModel.select_by_name(guild.name)
+            return f"{streamer.streamer_display_name}({streamer.streamer_name})"
+        else:
+            return guild.name
 
 
 async def setup(bot: commands.Bot):

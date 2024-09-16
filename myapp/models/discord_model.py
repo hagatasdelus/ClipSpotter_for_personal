@@ -1,6 +1,7 @@
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, Enum, select, BigInteger
 from myapp.utils.database import db_session, select_session
+from sqlalchemy import BigInteger, Enum, String, select
+from sqlalchemy.orm import Mapped, mapped_column
+
 from .base_model import BaseModel
 from .category import Category
 
@@ -18,7 +19,7 @@ class DiscordModel(BaseModel):
         default=Category.UNSELECTED,
     )
     name: Mapped[str] = mapped_column("set_name", String(64), nullable=True)
-    get_from: Mapped[int] = mapped_column("get_from", nullable=True)
+    days_ago: Mapped[int] = mapped_column("days_ago", nullable=True)
 
     def __init__(self, guild_id):
         self.guild_id = guild_id
@@ -37,9 +38,9 @@ class DiscordModel(BaseModel):
             match_result = result.scalars().first()
             return match_result
 
-    async def update_days_by_guild_id(self, get_from: int):
+    async def update_days_by_guild_id(self, days_ago: int):
         async with db_session() as session:
-            self.get_from = get_from
+            self.days_ago = days_ago
             session.add(self)
 
     async def save_new_cat_settings(self, category: Category, name: str):
