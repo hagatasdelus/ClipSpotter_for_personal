@@ -1,48 +1,54 @@
 {
-    "title": "Help",
-    "description": "This is a bot that allows you to get clips from Twitch.",
-    "color": "blue",
-    "general_usage": {
-      "name": "Command Usage",
-      "value": "All commands can be used as slash commands."
+  "title": "Help",
+  "description": "This is a bot that allows you to get clips from Twitch.",
+  "color": "blue",
+  "general_usage": {
+    "name": "Command Usage",
+    "value": "All commands can be used as slash commands."
+  },
+  "commands": [
+    {
+      "name": "Set Command",
+      "value": "Use this command to set the streamer or game, whose/what game clips to get.",
+      "usage": "```/set <category> <username>```",
+      "categories": "Streamers, Games",
+      "example": "```/set Streamers fps_shaka\n/set Games VALORANT```"
     },
-    "commands": [
-      {
-        "name": "Set Command",
-        "value": "Use this command to set the streamer or game, whose/what game clips to get.",
-        "usage": "```/set <category> <name>```",
-        "categories": "Streamers, Games",
-        "example": "```/set Streamers fps_shaka\n/set Games VALORANT```"
-      },
-      {
-        "name": "Display Command",
-        "value": "Use this command to display clips from the set streamer or game.\n\"<number_of_clips>\" can be a value from 1 to 10.\nBy specifying 'ephemeral', you can (explicitly) set whether the clip's display results should be made public. (default: private)",
-        "usage": "```/display <number_of_clips>\n/display <number_of_clips> <visibility>```",
-        "example": "```/display 5\n/display 3 public```"
-      },
-      {
-        "name": "Day Command",
-        "value": "Set the number of days to look back for clips.\nThe number of days can be specified up to 5 years (1825 days).",
-        "usage": "```/day <number_of_days>```",
-        "example": "```/day 7```"
-      },
-      {
-        "name": "Status Command",
-        "value": "Display current settings for clip fetching.",
-        "usage": "```/status```"
-      },
-      {
-        "name": "Remove Command",
-        "value": "Remove current clip fetching settings.",
-        "usage": "```/remove```"
-      }
-    ],
-    "note": {
-      "name": "Note",
-      "value": "Some commands may require \"use application commands\" permissions."
+    {
+      "name": "Set Streamer Command",
+      "value": "Use this command to set the streamer to get clips by display name (Streamers only).",
+      "usage": "```/set <display name>```",
+      "example": "```/set Streamers スタンミ```"
     },
-    "attention": {
-      "name": "Attention",
-      "value": "About the command 'set'\nWhen the category is Games, regarding uppercase and lowercase letters when specifying a game name, it will be recognized without issue as long as the game name you specified roughly matches the official game name. However, this is not the case for Streamers.\nFor Streamers, it should be exactly the same as the name of the streamer you want to specify."
+    {
+      "name": "Display Command",
+      "value": "Use this command to display clips from the set streamer or game.\n\"<number_of_clips>\" can be a value from 1 to 10.",
+      "usage": "```/display <number_of_clips>\n/display <number_of_clips>```",
+      "example": "```/display 5```"
+    },
+    {
+      "name": "Clip Range Command",
+      "value": "Set the number of days to look back for clips.\nThe number of days can be specified up to 5 years (1825 days).",
+      "usage": "```/clip-range <number_of_days>```",
+      "example": "```/clip-range 7```"
+    },
+    {
+      "name": "Status Command",
+      "value": "Display current settings for clip fetching.",
+      "usage": "```/status```"
+    },
+    {
+      "name": "Remove Command",
+      "value": "Remove current clip fetching settings.",
+      "usage": "```/remove```"
     }
+  ],
+  "note": {
+    "name": "Note",
+    "value": "Some commands may require \"use application commands\" permissions."
+  },
+  "attention": {
+    "name": "Attention",
+    "value": "About the command 'set'\nWhen the category is Games, regarding uppercase and lowercase letters when specifying a game name, it will be recognized without issue as long as the game name you specified roughly matches the official game name. However, this is not the case for Streamers.\nFor Streamers, it should be exactly the same as the name of the streamer you want to specify.\nYou can optionally specify 'visibility' to (explicitly) set whether or not the results of the command display should be made public (default: private)."
   }
+}
