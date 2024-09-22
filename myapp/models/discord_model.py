@@ -1,6 +1,7 @@
-from myapp.utils.database import db_session, select_session
 from sqlalchemy import BigInteger, Enum, String, select
 from sqlalchemy.orm import Mapped, mapped_column
+
+from myapp.utils.database import db_session, select_session
 
 from .base_model import BaseModel
 from .category import Category
@@ -10,7 +11,10 @@ class DiscordModel(BaseModel):
     __tablename__ = "discord_users"
 
     guild_id: Mapped[int] = mapped_column(
-        "guild_id", BigInteger, nullable=False, index=True
+        "guild_id",
+        BigInteger,
+        nullable=False,
+        index=True,
     )
     category: Mapped[Category] = mapped_column(
         "category",
@@ -18,25 +22,31 @@ class DiscordModel(BaseModel):
         nullable=False,
         default=Category.UNSELECTED,
     )
-    name: Mapped[str] = mapped_column("set_name", String(64), nullable=True)
-    days_ago: Mapped[int] = mapped_column("days_ago", nullable=True)
+    name: Mapped[str] = mapped_column(
+        "set_name",
+        String(64),
+        nullable=True,
+    )
+    days_ago: Mapped[int] = mapped_column(
+        "days_ago",
+        nullable=True,
+    )
 
     def __init__(self, guild_id):
         self.guild_id = guild_id
 
     @classmethod
-    async def create_new_guild(cls, guild_id: int):
+    async def create_new_guild(cls, guild_id: int) -> "DiscordModel":
         async with db_session() as session:
             new_guild = cls(guild_id=guild_id)
             session.add(new_guild)
             return new_guild
 
     @classmethod
-    async def select_guild_by_guild_id(cls, guild_id):
+    async def select_guild_by_guild_id(cls, guild_id) -> "DiscordModel":
         async with select_session() as session:
             result = await session.execute(select(cls).filter_by(guild_id=guild_id))
-            match_result = result.scalars().first()
-            return match_result
+            return result.scalars().first()
 
     async def update_days_by_guild_id(self, days_ago: int):
         async with db_session() as session:

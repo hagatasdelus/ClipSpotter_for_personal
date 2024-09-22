@@ -1,0 +1,41 @@
+name: Lint Check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  run-lint:
+    runs-on: ubuntu-latest
+    name: Run Lint
+    steps:
+      - name: Check out source repository
+        uses: actions/checkout@v4
+      - name: Set up Python environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pypoetry
+          key: ${{ runner.os }}-poetry-${{ hashFiles('**/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-
+
+      - name: Install Poetry
+        run:  pip install poetry==1.8.3
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Lint with Ruff
+        run: poetry run ruff check . --output-format=github
+
+      - name: Lint with Mypy
+        run: poetry run mypy . --config-file pyproject.toml --ignore-missing-imports --no-namespace-packages

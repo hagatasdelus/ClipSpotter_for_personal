@@ -11,4 +11,5 @@ services:
     environment:
       DATABASE_URL: sqlite+aiosqlite:///./${DATABASE_NAME}
     volumes:
-      - ./${DATABASE_NAME}:/app/${DATABASE_NAME}
+      - ./logs:/app/logs
+

@@ -8,3 +8,5 @@ MAX_CLIPS_TO_FETCH = 10
 MIN_CLIPS_TO_FETCH = 1
 # 類似度の閾値（%）
 THRESHOLD_FOR_SIMILARITY = 80
+# request timeout (sec)
+REQUEST_TIMEOUT = 5

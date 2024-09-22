@@ -1,0 +1,22 @@
+{
+    // mypy
+    "mypy-type-checker.args": [
+        "--config=pyproject.toml"
+    ],
+
+    // Ruff
+    // refs: https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff
+    "[python]": {
+
+        "editor.formatOnSave": true,
+
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        }
+    },
+    "ruff.format.args": [
+        "--config=pyproject.toml"
+    ],
+    "ruff.importStrategy": "useBundled",
+}

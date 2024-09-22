@@ -1,13 +1,15 @@
 import asyncio
-from collections.abc import AsyncGenerator
+from collections.abc import AsyncGenerator, Mapping
 from contextlib import asynccontextmanager
 from typing import Any
 
 import discord
 from discord.ext import commands
 from fastapi import FastAPI
-from myapp import ACCESS_TOKEN, DATABASE_URL, Base
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.declarative import declarative_base
+
+from myapp import ACCESS_TOKEN
+from myapp.config import engine, get_logger
 
 intents = discord.Intents.default()
 intents.guilds = True
@@ -15,17 +17,16 @@ intents.messages = True
 intents.message_content = True
 bot = commands.Bot(command_prefix="cs$", case_insensitive=True, intents=intents)
 
-engine = create_async_engine(DATABASE_URL, echo=True)
-async_session = async_sessionmaker(
-    bind=engine, expire_on_commit=False, class_=AsyncSession
-)
+Base = declarative_base()
+logger = get_logger(__name__)
 
 
 def create_app():
     @asynccontextmanager
-    async def lifespan(app: FastAPI) -> AsyncGenerator[Any, None]:
+    async def lifespan(app: FastAPI) -> AsyncGenerator[Mapping[str, Any], None]:
+        _ = app  # Unused variable
         await init_models()
-        yield
+        yield {}
 
     app = FastAPI(lifespan=lifespan)
 
@@ -41,16 +42,16 @@ async def init_models() -> None:
 
 
 async def load_extensions():
-    INITIAL_EXTENSIONS = [
+    initial_extensions = [
         "myapp.cogs.set",
         "myapp.cogs.display",
-        "myapp.cogs.clip-range",
+        "myapp.cogs.clip_range",
         "myapp.cogs.status",
         "myapp.cogs.remove",
-        "myapp.cogs.set-streamer",
+        "myapp.cogs.set_streamer",
         "myapp.cogs.cshelp",
     ]
-    for cog in INITIAL_EXTENSIONS:
+    for cog in initial_extensions:
         await bot.load_extension(cog)
 
 
@@ -62,7 +63,7 @@ async def main():
 
 @bot.event
 async def on_ready():
-    print("Bot is ready.")
+    logger.info("Bot is ready.")
 
 
 @bot.event

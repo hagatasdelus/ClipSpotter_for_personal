@@ -1,7 +1,12 @@
 import json
 
+import aiofiles
 import discord
 from discord.ext import commands
+
+from myapp.config import get_logger
+
+logger = get_logger(__name__)
 
 
 class CSHelp(commands.Cog):
@@ -11,16 +16,19 @@ class CSHelp(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("Successfully loaded : Help")
+        logger.info("Successfully loaded : Help")
         await self.bot.tree.sync()
 
     @discord.app_commands.command(
-        name="help", description="Display the help information."
+        name="help",
+        description="Display the help information.",
     )
     @discord.app_commands.checks.has_permissions(use_application_commands=True)
     async def help_command(self, interaction: discord.Interaction):
-        with open("myapp/help_data.json", "r") as f:
-            self.help_data = json.load(f)
+        async with aiofiles.open("myapp/help_data.json", "r") as f:
+            content = await f.read()
+            self.help_data = json.loads(content)
+
         embed = discord.Embed(
             title=self.help_data["title"],
             description=self.help_data["description"],
@@ -40,9 +48,7 @@ class CSHelp(commands.Cog):
             if "usage" in command:
                 embed.add_field(name="Usage", value=command["usage"], inline=False)
             if "categories" in command:
-                embed.add_field(
-                    name="Categories", value=command["categories"], inline=False
-                )
+                embed.add_field(name="Categories", value=command["categories"], inline=False)
             if "example" in command:
                 embed.add_field(name="Example", value=command["example"], inline=False)
 

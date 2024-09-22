@@ -1,8 +1,8 @@
 """#1 migrate to sqlite
 
-Revision ID: f6dc74635648
-Revises: 
-Create Date: 2024-09-16 01:22:18.630427
+Revision ID: fa1f2c4cc4be
+Revises:
+Create Date: 2024-09-22 11:57:43.163170
 
 """
 
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision: str = "f6dc74635648"
+revision: str = "fa1f2c4cc4be"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -23,19 +23,13 @@ def upgrade() -> None:
     op.create_table(
         "discord_users",
         sa.Column("guild_id", sa.BigInteger(), nullable=False),
-        sa.Column(
-            "category",
-            sa.Enum("STREAMER", "GAME", "UNSELECTED", name="category"),
-            nullable=False,
-        ),
+        sa.Column("category", sa.Enum("STREAMER", "GAME", "UNSELECTED", name="category"), nullable=False),
         sa.Column("set_name", sa.String(length=64), nullable=True),
         sa.Column("days_ago", sa.Integer(), nullable=True),
         sa.Column("id", sa.Integer(), nullable=False),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index(
-        op.f("ix_discord_users_guild_id"), "discord_users", ["guild_id"], unique=False
-    )
+    op.create_index(op.f("ix_discord_users_guild_id"), "discord_users", ["guild_id"], unique=False)
     op.create_table(
         "twitch_games",
         sa.Column("game_name", sa.String(), nullable=False),

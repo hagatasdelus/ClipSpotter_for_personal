@@ -6,9 +6,9 @@ class Visibility(enum.Enum):
     PRIVATE = "private"
 
     @classmethod
-    def selectable_visibilities(cls):
-        return [value for value in cls]
+    def selectable_visibilities(cls) -> list:
+        return list(cls)
 
     @property
-    def is_ephemeral(self):
+    def is_ephemeral(self) -> bool:
         return self == Visibility.PRIVATE

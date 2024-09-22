@@ -1,6 +1,10 @@
 import discord
 from discord.ext import commands
+
+from myapp.config import get_logger
 from myapp.models import Category, DiscordModel
+
+logger = get_logger(__name__)
 
 
 class Remove(commands.Cog):
@@ -9,18 +13,20 @@ class Remove(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("Successfully loaded : Remove")
+        logger.info("Successfully loaded : Remove")
         await self.bot.tree.sync()
 
     @discord.app_commands.command(
-        name="remove", description="Remove the current settings."
+        name="remove",
+        description="Remove the current settings",
     )
     @discord.app_commands.checks.has_permissions(use_application_commands=True)
     async def remove_command(self, interaction: discord.Interaction):
         guild = await DiscordModel.select_guild_by_guild_id(interaction.guild_id)
         if not guild:
             await interaction.response.send_message(
-                "Not found guild info.", ephemeral=True
+                "Not found guild info. Please set the streamer or game using the '/set' command.",
+                ephemeral=True,
             )
             return
         if guild.category == Category.UNSELECTED or not guild.name:
@@ -31,8 +37,10 @@ class Remove(commands.Cog):
             return
         await guild.remove_cat_settings()
         await interaction.response.send_message(
-            "Removed current settings. Please set again.", ephemeral=True
+            "Removed current settings. Please set again.",
+            ephemeral=True,
         )
+        return
 
 
 async def setup(bot):

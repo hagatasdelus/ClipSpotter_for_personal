@@ -7,12 +7,9 @@ class Category(enum.Enum):
     UNSELECTED = "unselected"
 
     @classmethod
-    def selectable_categories(cls):
+    def selectable_categories(cls) -> list["Category"]:
         return [c for c in cls if c != cls.UNSELECTED]
 
-    def validate(self) -> bool:
-        return self in (self.STREAMER, self.GAME)
-
     @property
-    def display_name(self):
+    def display_name(self) -> str:
         return self.value.capitalize()
