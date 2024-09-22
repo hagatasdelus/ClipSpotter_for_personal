@@ -5,10 +5,7 @@ class Base(DeclarativeBase):
     pass
 
 
-Base_Model = Base
-
-
-class BaseModel(Base_Model):
+class BaseModel(Base):
     __abstract__ = True
 
     id: Mapped[int] = mapped_column("id", primary_key=True)
