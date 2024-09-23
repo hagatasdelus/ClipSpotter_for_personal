@@ -11,14 +11,12 @@
         "name": "Set Command",
         "value": "Use this command to set the streamer or game, whose/what game clips to get.",
         "usage": "```/set <category> <username>```",
-        "categories": "Streamers, Games",
-        "example": "```/set Streamers fps_shaka\n/set Games VALORANT```"
+        "categories": "Streamers, Games"
       },
       {
         "name": "Set Streamer Command",
         "value": "Use this command to set the streamer to get clips by display name (Streamers only).",
-        "usage": "```/set <display name>```",
-        "example": "```/set Streamers スタンミ```"
+        "usage": "```/set-streamer <display name>```"
       },
       {
         "name": "Display Command",

@@ -25,7 +25,7 @@ class CSHelp(commands.Cog):
     )
     @discord.app_commands.checks.has_permissions(use_application_commands=True)
     async def help_command(self, interaction: discord.Interaction):
-        async with aiofiles.open("myapp/help_data.json", "r") as f:
+        async with aiofiles.open("clipspotter/data/help_data.json", "r") as f:
             content = await f.read()
             self.help_data = json.loads(content)
 
