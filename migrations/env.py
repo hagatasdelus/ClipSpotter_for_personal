@@ -8,7 +8,7 @@ from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
-from myapp.models.base_model import Base
+from clipspotter.models.base_model import Base
 
 load_dotenv(override=True)
 dotenv_path = os.path.join(os.path.dirname(__file__), ".env")

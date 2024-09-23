@@ -4,7 +4,7 @@ from typing import AsyncGenerator
 
 from sqlalchemy.exc import SQLAlchemyError
 
-from myapp.config import async_session, get_logger
+from clipspotter.config import async_session, get_logger
 
 logger = get_logger(__name__)
 

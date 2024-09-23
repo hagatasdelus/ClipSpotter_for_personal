@@ -1,9 +1,9 @@
 import discord
 from discord.ext import commands
 
-from myapp.api import TwitchAPI
-from myapp.config import get_logger
-from myapp.models import (
+from clipspotter.api import TwitchAPI
+from clipspotter.config import get_logger
+from clipspotter.models import (
     Category,
     DiscordModel,
     TwitchGameModel,

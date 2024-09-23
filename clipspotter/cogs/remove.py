@@ -1,8 +1,8 @@
 import discord
 from discord.ext import commands
 
-from myapp.config import get_logger
-from myapp.models import Category, DiscordModel
+from clipspotter.config import get_logger
+from clipspotter.models import Category, DiscordModel
 
 logger = get_logger(__name__)
 

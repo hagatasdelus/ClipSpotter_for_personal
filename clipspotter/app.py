@@ -8,8 +8,8 @@ from discord.ext import commands
 from fastapi import FastAPI
 from sqlalchemy.ext.declarative import declarative_base
 
-from myapp import ACCESS_TOKEN
-from myapp.config import engine, get_logger
+from clipspotter import ACCESS_TOKEN
+from clipspotter.config.config import engine, get_logger
 
 intents = discord.Intents.default()
 intents.guilds = True
@@ -43,13 +43,13 @@ async def init_models() -> None:
 
 async def load_extensions():
     initial_extensions = [
-        "myapp.cogs.set",
-        "myapp.cogs.display",
-        "myapp.cogs.clip_range",
-        "myapp.cogs.status",
-        "myapp.cogs.remove",
-        "myapp.cogs.set_streamer",
-        "myapp.cogs.cshelp",
+        "clipspotter.cogs.set",
+        "clipspotter.cogs.display",
+        "clipspotter.cogs.clip_range",
+        "clipspotter.cogs.status",
+        "clipspotter.cogs.remove",
+        "clipspotter.cogs.set_streamer",
+        "clipspotter.cogs.cshelp",
     ]
     for cog in initial_extensions:
         await bot.load_extension(cog)

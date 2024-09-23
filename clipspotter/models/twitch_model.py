@@ -4,9 +4,9 @@ from rapidfuzz import fuzz
 from sqlalchemy import select
 from sqlalchemy.orm import Mapped, mapped_column
 
-from myapp.constants import THRESHOLD_FOR_SIMILARITY
-from myapp.models.base_model import BaseModel
-from myapp.utils.database import db_session, select_session
+from clipspotter.config import THRESHOLD_FOR_SIMILARITY
+from clipspotter.models.base_model import BaseModel
+from clipspotter.utils.database import db_session, select_session
 
 T = TypeVar("T", bound="TwitchBaseModel")
 

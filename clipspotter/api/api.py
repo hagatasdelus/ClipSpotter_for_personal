@@ -3,9 +3,9 @@ from typing import Any
 
 import requests
 
-from myapp import CLIENT_ID, CLIENT_SECRET
-from myapp.constants import REQUEST_TIMEOUT
-from myapp.models.category import Category
+from clipspotter import CLIENT_ID, CLIENT_SECRET
+from clipspotter.config import REQUEST_TIMEOUT
+from clipspotter.models.category import Category
 
 
 class TwitchAPI:

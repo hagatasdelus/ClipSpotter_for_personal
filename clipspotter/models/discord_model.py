@@ -1,7 +1,7 @@
 from sqlalchemy import BigInteger, Enum, String, select
 from sqlalchemy.orm import Mapped, mapped_column
 
-from myapp.utils.database import db_session, select_session
+from clipspotter.utils.database import db_session, select_session
 
 from .base_model import BaseModel
 from .category import Category

@@ -1,10 +1,9 @@
 import discord
 from discord.ext import commands
 
-from myapp.api import TwitchAPI
-from myapp.config import get_logger
-from myapp.constants import MAX_CLIPS_TO_FETCH, MIN_CLIPS_TO_FETCH
-from myapp.models import (
+from clipspotter.api import TwitchAPI
+from clipspotter.config import MAX_CLIPS_TO_FETCH, MIN_CLIPS_TO_FETCH, get_logger
+from clipspotter.models import (
     Category,
     DiscordModel,
     TwitchGameModel,

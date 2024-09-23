@@ -1,9 +1,8 @@
 import discord
 from discord.ext import commands
 
-from myapp.config import get_logger
-from myapp.constants import MIN_CLIP_FETCH_DAYS
-from myapp.models import Category, DiscordModel, TwitchStreamerModel, Visibility
+from clipspotter.config import MIN_CLIP_FETCH_DAYS, get_logger
+from clipspotter.models import Category, DiscordModel, TwitchStreamerModel, Visibility
 
 logger = get_logger(__name__)
 

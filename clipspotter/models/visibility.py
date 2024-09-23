@@ -6,7 +6,7 @@ class Visibility(enum.Enum):
     PRIVATE = "private"
 
     @classmethod
-    def selectable_visibilities(cls) -> list:
+    def selectable_visibilities(cls) -> list["Visibility"]:
         return list(cls)
 
     @property
