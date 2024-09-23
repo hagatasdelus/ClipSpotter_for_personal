@@ -1,4 +1,4 @@
-from .api import TwitchAPI
+from .twitch import TwitchAPI
 
 __all__ = [
     "TwitchAPI",
