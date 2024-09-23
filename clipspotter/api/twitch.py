@@ -50,7 +50,7 @@ class TwitchAPI:
         params[cat_id_name] = set_id
         return self._get_response(url, params)
 
-    def _get_streamer_keys(self, name: str) -> tuple[str | None, str | None, str | None]:
+    def get_broadcaster_keys(self, name: str) -> tuple[str | None, str | None, str | None]:
         url = self.base_url + "users"
         query_params = {"login": name}
         data = self._get_response(url, query_params)
@@ -58,16 +58,10 @@ class TwitchAPI:
             return None, None, None
         return data[0].get("id"), data[0].get("login"), data[0].get("display_name")
 
-    def _get_game_keys(self, name: str) -> tuple[str | None, str | None]:
+    def get_game_keys(self, name: str) -> tuple[str | None, str | None]:
         url = self.base_url + "games"
         query_params = {"name": name}
         data = self._get_response(url, query_params)
         if not data:
             return None, None
         return data[0].get("id"), data[0].get("name")
-
-    def get_broadcaster_id(self, name: str) -> tuple[str | None, str | None, str | None]:
-        return self._get_streamer_keys(name)
-
-    def get_game_id(self, name: str) -> tuple[str | None, str | None]:
-        return self._get_game_keys(name)

@@ -95,7 +95,7 @@ class Set(commands.Cog):
                 existing_streamer.streamer_name,
             )
 
-        set_id, name, display_name = self.api.get_broadcaster_id(input_name)
+        set_id, name, display_name = self.api.get_broadcaster_keys(input_name)
         if not set_id or not name or not display_name:
             return None, None
         await TwitchStreamerModel.create(
@@ -113,7 +113,7 @@ class Set(commands.Cog):
                 existing_game.game_name,
             )
 
-        set_id, name = self.api.get_game_id(input_name)
+        set_id, name = self.api.get_game_keys(input_name)
         if not set_id:
             return None, None
         await TwitchGameModel.create(game_name=name, game_id=set_id)

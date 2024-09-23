@@ -1,5 +1,5 @@
 import asyncio
-from collections.abc import AsyncGenerator, Mapping
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from typing import Any
 
@@ -23,10 +23,10 @@ logger = get_logger(__name__)
 
 def create_app():
     @asynccontextmanager
-    async def lifespan(app: FastAPI) -> AsyncGenerator[Mapping[str, Any], None]:
-        _ = app  # Unused variable
+    async def lifespan(app: FastAPI) -> AsyncGenerator[None, Any]:
+        _ = app
         await init_models()
-        yield {}
+        yield
 
     app = FastAPI(lifespan=lifespan)
 
